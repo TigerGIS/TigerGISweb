@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+  <title>The first map 中文也可以</title>
+  <link rel="stylesheet" type="text/css" href="http://localhost/jsapi/arcgis_js_v312_api/arcgis_js_api/library/3.12/3.12/dijit/themes/tundra/tundra.css" />
+  <link rel="stylesheet" type="text/css" href="http://localhost/jsapi/arcgis_js_v312_api/arcgis_js_api/library/3.12/3.12/esri/css/esri.css" />
+  <script type="text/javascript" src="http://localhost/jsapi/arcgis_js_v312_api/arcgis_js_api/library/3.12/3.12/init.js">
+</script>
+  <script src="dojo/jsapi_vsdoc10_v33.js" type="text/javascript">
+</script>
+  <style type="text/css">
+  .MapClass
+  { width:900px;
+  height:600px;
+  border:1px solid #000;
+  }
+  </style>
+  <script type="text/javascript">
+                                  dojo.require("esri.map");
+                            
+      dojo.require("esri.dijit.OverviewMap");  
+            dojo.addOnLoad(function () 
+                                  {
+                                  var MyMap = new esri.Map("MyMapDiv");
+                                  var MyTiledMapServiceLayer = new esri.layers.ArcGISTiledMapServiceLayer 
+                                  ("http://www.arcgisonline.cn/ArcGIS/rest/services/ChinaOnlineCommunity/MapServer");
+                                  MyMap.addLayer(MyTiledMapServiceLayer)
+                                  
+	                                         var over = 
+	                                         {
+	                                         map: Map,
+	                                         attachTo: "bottom-right",
+	                                         color: "#D84E13",
+	                                         expandFactor:2,
+	                                         baseLayer:MyTiledMapServiceLayer
+	                                         };
+                                         var MapViewer = new esri.dijit.OverviewMap(over, dojo.byId("OverViewDiv"));
+                                         MapViewer.startup();
+                                         }
+                                         )
+  //]]>
+  </script>
+</head>
+
+<body class="tundra">
+  <div id="MyMapDiv" class="MapClass"></div>
+</body>
+</html>
