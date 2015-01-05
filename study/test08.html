@@ -1,0 +1,128 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no" />
+
+		<title>08 show image layer timer</title>
+		<link rel="stylesheet" type="text/css" href="http://localhost/jsapi/arcgis_js_v312_api/arcgis_js_api/library/3.12/3.12/dijit/themes/claro/claro.css" />
+		<link rel="stylesheet" type="text/css" href="http://localhost/jsapi/arcgis_js_v312_api/arcgis_js_api/library/3.12/3.12/dijit/themes/nihilo/nihilo.css" />
+		<link rel="stylesheet" type="text/css" href="http://localhost/jsapi/arcgis_js_v312_api/arcgis_js_api/library/3.12/3.12/dijit/themes/tundra/tundra.css" />
+		<link rel="stylesheet" type="text/css" href="http://localhost/jsapi/arcgis_js_v312_api/arcgis_js_api/library/3.12/3.12/dijit/themes/soria/soria.css" />
+		<link rel="stylesheet" type="text/css" href="http://localhost/jsapi/arcgis_js_v312_api/arcgis_js_api/library/3.12/3.12/esri/css/esri.css" />
+		<script type="text/javascript" src="http://localhost/jsapi/arcgis_js_v312_api/arcgis_js_api/library/3.12/3.12/init.js"></script>
+		<style type="text/css">
+			/*<![CDATA[*/
+			html, body, #mapDiv {
+				padding: 0;
+				margin: 0;
+				height: 100%;
+				width: 100%;
+			}
+			/*]]>*/
+		</style>
+
+		<script>
+			// setTimeout("self.location.reload();",1000);// 一秒刷新一次
+
+			/*  // ，1000 意思是1000毫秒，如果页面只需要刷新一次，那么如下代码*/
+			// window.location.reload(true);
+		</script>
+
+		<script type="text/javascript">
+			var index = 0;
+			var photoArray = new Array(9);
+			photoArray[0] = "http://localhost/jsapi/images2/IMG00000.bmp";
+			//图片地址
+			photoArray[1] = "http://localhost/jsapi/images2/IMG00001.bmp";
+			photoArray[2] = "http://localhost/jsapi/images2/IMG00002.bmp";
+			photoArray[3] = "http://localhost/jsapi/images2/IMG00003.bmp";
+			photoArray[4] = "http://localhost/jsapi/images2/IMG00004.bmp";
+			photoArray[5] = "http://localhost/jsapi/images2/IMG00005.bmp";
+			photoArray[6] = "http://localhost/jsapi/images2/IMG00006.bmp";
+			photoArray[7] = "http://localhost/jsapi/images2/IMG00007.bmp";
+			photoArray[8] = "http://localhost/jsapi/images2/IMG00008.bmp";
+
+			//<![CDATA[
+			require(["esri/map", "esri/layers/MapImage", "esri/layers/MapImageLayer", "dojo/dom", "dojo/on", "dojo/domReady!"], function(Map, MapImage, MapImageLayer, dom, on) {
+				var map = new Map("mapDiv", {
+					basemap : "streets",
+					center : [-65, 6.5],
+					zoom : 6,
+				});
+				//=========
+				//js事件绑定函数，方法1
+				map.on("load", AddImageLayer);
+				setInterval(AddImageLayer, 60);
+				//每隔2秒改变一次
+				// setTimeout("AddImageLayer();",1000);
+
+				var mil = new MapImageLayer({
+					'id' : 'roadImage'
+				});
+
+				function AddImageLayer() {
+					// create and add the layer
+					// create an add the actual image
+					//map.removeAllLayers();
+
+					//  var number = Math.ceil(Math.random()*7);//有几张图片就乘以几
+					var url = photoArray[index];
+					var mi = new MapImage({
+						'extent' : {
+							'xmin' : -75,
+							'ymin' : 0,
+							'xmax' : -55,
+							'ymax' : 15,
+							'spatialReference' : {
+								'wkid' : 4326
+							}
+						},
+						'href' : url
+					});
+
+					//mil.removeAllImages();
+					mil.addImage(mi);
+					if (map.LayerCount > 1) {
+						map.removeLayer(1);
+					}
+					map.addLayer(mil);
+
+					index++;
+					//Alter("index");
+					if (index > 8) {
+						index = 0;
+					}
+				}//end AddImageLayer
+
+				//=========
+				//js事件绑定函数，方法2
+				// map.on("load", function(){
+				//	 	 var mi = new MapImage({
+				//								    'extent': { 'xmin': -75, 'ymin': 0, 'xmax': -55, 'ymax': 15, 'spatialReference': { 'wkid': 4326 }},
+				//									'href': 'http://localhost/Jellyfish.jpg'
+				//	 							});
+				//
+				//									var mil = new MapImageLayer({
+				//											    'id': 'roadImage'
+				//											});
+				//											mil.addImage(mi);
+				//									              map.addLayer(mil);
+				//									   }
+				//	 );
+
+				//	  });
+
+				//=========
+
+			});
+			//]]>
+		</script>
+	</head>
+
+	<body>
+		<div id="mapDiv"></div>
+	</body>
+</html>
